@@ -57,6 +57,30 @@ class TodosTest {
     }
 
     @Test
+    public void shouldSearchTwoMatches() {
+        SimpleTask simpleTask = new SimpleTask(5, "Купить Хлеб");
+
+        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда}");
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expected = {simpleTask, epic};
+        Task[] actual = todos.search("Хлеб");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
     public void shouldSearchNoMatches() {
         SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
 
@@ -77,6 +101,6 @@ class TodosTest {
         todos.add(meeting);
 
         Task[] expected = todos.search("Тест");
-        assertTrue(expected.length == 0);
+        assertEquals(0, expected.length);
     }
 }
